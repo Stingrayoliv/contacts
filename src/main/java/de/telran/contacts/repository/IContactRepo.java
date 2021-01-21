@@ -22,14 +22,12 @@ public interface IContactRepo {
     Contact find(int id);
 
     /**
-     *
      * @param id
      * @return removed contact or null if not found
      */
     Contact remove(int id);
 
     /**
-     *
      * @return a list with all present contacts
      */
     List<Contact> findAll();

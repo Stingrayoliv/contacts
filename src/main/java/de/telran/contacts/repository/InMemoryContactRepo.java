@@ -3,10 +3,7 @@ package de.telran.contacts.repository;
 import de.telran.contacts.model.Contact;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class InMemoryContactRepo implements IContactRepo {
@@ -24,7 +21,7 @@ public class InMemoryContactRepo implements IContactRepo {
         } else if (source.containsKey(id)) {
             source.put(id, contact);
         } else {
-            throw new ContactNotFoundException();
+            throw new ContactNotFoundException("Incorrect id : " + id);
         }
     }
 
