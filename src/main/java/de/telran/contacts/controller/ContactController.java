@@ -5,8 +5,10 @@ import de.telran.contacts.service.ContactService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -18,17 +20,39 @@ public class ContactController {
 
     ContactService contactService;
 
-    @GetMapping("/contacts")
+    @GetMapping("contacts")
     public String getAll(Model model) {
-        //TODO return back this code
-//        List<Contact> contacts = contactService.getAll();
+        List<Contact> contacts = contactService.getAll();
 
-        //TODO comment out this code
-        List<Contact> contacts = Arrays.asList(
-                new Contact(1, "Vasya", "Vasin", 20),
-                new Contact(1, "Petya", "Petin", 22)
-        );
         model.addAttribute("contactList", contacts);
         return "contacts";
+    }
+
+    @GetMapping("contacts/add")
+    public String addContactForm(Model model) {
+        model.addAttribute("contact", new Contact());
+        return "contact-form";
+    }
+
+    @GetMapping("contacts/{id}/edit")
+    public String editContactForm(@PathVariable int id, Model model) {
+        Contact contact = contactService.get(id);
+        model.addAttribute("contact", contact);
+        return "contact-form";
+    }
+
+    @PostMapping("contact/save")
+    public String saveContact(@ModelAttribute Contact contact) {
+        contactService.create(contact);
+        return "redirect:/contacts";
+    }
+
+    /**
+     * the endpoint should delete the contact and redirect to the contacts page
+     */
+    @GetMapping("contacts/{id}/delete")
+    public String deleteContact(@PathVariable int id) {
+        contactService.remove(id);
+        return "redirect:/contacts";
     }
 }
